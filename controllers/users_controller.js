@@ -7,23 +7,11 @@ module.exports.profile = function(req,res){
 
 // render the sign up page
 module.exports.signUp = function(req,res){
-    // if(req.body.password != req.body.confirm_password){
-    //     return res.redirect('back');
-    // }
-    // if(!User){
-    //     User.findOne({email: req.body.email}).then(User=>{
-        
-    //     if(!user){
-    //         User.create(req.body, function(err,user){
-                
-    //             return res.redirect('/users/sign-in');
-    //         })
-    //     }else{
-    //         return res.redirect('back');
-    //     }
-    // });
-    // }
-    return res.redirect('back');
+    
+    return res.render('user_signup',{
+        title:"codial | Sign up"
+    })
+    
 }
 
 // render the sign in page
@@ -35,7 +23,24 @@ module.exports.signIn = function(req,res){
 
 // get the sign up data
 module.exports.create = function(req,res){
-
+    User.findOne({'name' : req.body.name}).then(function(data,err){
+        if(err){
+            console.log(err);
+            return res.redirect('/users/sign-up');
+        }
+        if(!data){
+            if(req.body.confirm_password==req.body.password){
+                var mydata = new User(req.data);
+                // mydata.save();
+                return res.redirect('/users/sign-in');
+            }else{
+                console.log("password and confirm password are not matching");
+                return res.redirect('/users/sign-up');
+            }
+        }else{
+            return res.rediredt('/users/sign-up');
+        }
+    })
 }
 
 // sign in and create a session for the user
