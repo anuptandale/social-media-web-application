@@ -94,9 +94,11 @@ module.exports.createSession = function(req, res){
     // });
     return res.redirect('/');
 }
-//  module.exports.signout = function(req,res){
-//         if(err){
-//             console.log('error in sign out process');
-//         }
-//             return res.redirect('/users/sign-in');
-//     }
+ module.exports.signout = function(req,res,next){
+        req.logout(function(err){
+            if(err){
+                return next(err);
+            }
+        });
+        return res.redirect('/');
+    }
