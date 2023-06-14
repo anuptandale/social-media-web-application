@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
     name:String,
-    email:{
+    email:{    //name will same as it is in the form
         type:String,
         unique:true
     },
