@@ -10,10 +10,24 @@
     <a href="/users/profile">profile</a>
     <section id="feed-posts">
         <h4>Posts</h4>
+         <% if(locals.user){ %> <!--only the authenticated user should able to write comment, but it might possible that user can go in inspect and make changes in code so we should check authentication in controller -->
         <form action="/posts/create" id="new-post-form" method="post">
             <textarea name="content" id="" cols="30" rows="3" placeholder="Type here..."></textarea>
             <input type="submit" value="Post">
         </form>
+        <%}%>
+        <div id="posts-list-container">
+            <ul>
+                <% for(post of posts){%>
+                    <li>
+                        <%=post.content%>
+                    </li>
+                    <span>
+                        <%= post.user.name%>
+                    </span>
+                <%}%>
+            </ul>
+        </div>
     </section>
 </body>
 </html>
