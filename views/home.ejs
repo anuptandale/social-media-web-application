@@ -18,13 +18,36 @@
         <%}%>
         <div id="posts-list-container">
             <ul>
-                <% for(post of posts){%>
+                 <% for(post of posts){%> <!--how posts is accesable from here -->
                     <li>
                         <%=post.content%>
                     </li>
                     <span>
                         <%= post.user.name%>
                     </span>
+                    <div class="post-comments">
+                        <% if(locals.user){%>
+                            <form action="/comments/create" method="POST">
+                                <input type="text" name="content" placeholder="Type here to add comment...">
+                                <input type="hidden" name="post" value="<%=post._id%>">
+                                <input type="submit" value="Add comment">
+                            </form>
+                        <%}%>
+
+                        <div class="post-comments-list">
+                            <ul id="post-comments-<%=post._id%>">
+                                <% for(comment of post.comments){%>
+                                    <p>
+                                        <%= comment.content%> <!-- momment.content = post.comments.content means we are in comment.js file from there we are fetching comments-->
+                                        <br>
+                                        <small>
+                                            <%=comment.user.name%> <!-- comment.user.name means now we are in user.js file and from there we are fetching names-->
+                                        </small>
+                                    </p>
+                                <%}%>
+                            </ul>
+                        </div>
+                    </div>
                 <%}%>
             </ul>
         </div>

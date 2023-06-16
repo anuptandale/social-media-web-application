@@ -6,8 +6,14 @@ const postSchema = new mongoose.Schema({
         require: true
     },user:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }
+        ref: 'User' //we are refering  User schema
+    },
+    comments: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Comment' //we are refering Comment schema
+        }
+    ]
 },{
     timestamps: true
 });

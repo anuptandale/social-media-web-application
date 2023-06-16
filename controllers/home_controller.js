@@ -10,7 +10,15 @@ module.exports.home = function(req,res){
     //         posts: posts //ask om what the posts mean
     //     })
     // })
-    Post.find().populate('user').then(function(posts,err){ //ask om how the user is use
+    Post.find()
+    .populate('user')
+    .populate({
+        path:'comments',
+        populate:{
+            path: 'user'
+        }
+    })
+    .then(function(posts,err){ // user is id of user stored in post dataset
         return res.render('home',{
             title: "codeial | Home",
             posts: posts
