@@ -9,7 +9,7 @@ module.exports.create = function(req,res){
                 post: req.body.post,
                 user: req.user._id
             }).then(function(comment,err){
-                post.comments.push(comment);
+                post.comments.push(comment); // it will automatically fetchout id and push it
                 post.save();
 
                 res.redirect('/');
