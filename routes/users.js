@@ -3,7 +3,8 @@ const router = express.Router();
 const passport = require('passport');
 
 const userController = require('../controllers/users_controller');
-router.get('/profile',passport.checkAuthentication, userController.profile); 
+router.get('/profile/:id',passport.checkAuthentication, userController.profile); 
+router.post('/update/:id', passport.checkAuthentication, userController.update);
 //if user sign in then only he can see profile page else he will redirect to sign in page this happens using check authentication 
 
 router.get('/sign-up', userController.signUp);

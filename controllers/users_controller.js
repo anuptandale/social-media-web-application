@@ -40,9 +40,13 @@ module.exports.profile = function(req,res){
     // }else{
     //     return res.redirect('/users/sign-in');
     // }
-    return res.render('profile', {
-        title: 'User Profile'
+    User.findById(req.params.id).then(function(user, err){
+        return res.render('profile', {
+            title: 'User Profile',
+            profile_user: user
+        })
     })
+    
 }
 
 // get the sign up data
@@ -101,4 +105,15 @@ module.exports.createSession = function(req, res){
             }
         });
         return res.redirect('/');
+}
+
+module.exports.update = function(req,res){
+    if(req.user.id == req.params.id){
+        User.findByIdAndUpdate(req.params.id, req.body).then(function(user, err){ //here req.body = {name: req.body,name , email: req.body.email}
+            return res.redirect('back');
+        })
+    }else{
+        //if user not matched
+        return res.status(401).send('Unauthorized');
     }
+}
