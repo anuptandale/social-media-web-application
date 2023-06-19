@@ -12,12 +12,12 @@ module.exports.create = function(req,res){
 }
 
 module.exports.destroy = function(req,res){
-    Post.findById(req.params.id).then( function(post,err){
-        //.id means converting the object id into string
+    Post.findById(req.params.id).then( function(post,err){ //req.params.id will get id from url (/posts/destroy/:id)
+        //.id means converting the object id into string (in only string we compare)
         if(post.user == req.user.id){
             post.deleteOne();
 
-            Comment.deleteMany({post: req.params.id}).then(function(err){
+            Comment.deleteMany({post: req.params.id}).then(function(err){ //and we will require to delete all comments to that post
                 return res.redirect('back');
             });
         }else{
