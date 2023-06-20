@@ -6,16 +6,19 @@ const User = require('../models/user');
 
 //authentication using passport
 passport.use(new LocalStrategy({ //telling passport to use local strategy
-    usernameField: 'email'
+    usernameField: 'email',
+    passReqToCallback: true // allows us to pass req in below function
     },
-    function(email, password, done){
+    function(req, email, password, done){
         User.findOne({email: email}).then(function(user,err){
             if(err){
-                console.log('Error in finding user --> Passport');
+                // console.log('Error in finding user --> Passport');
+                req.flash('error', err);
                 return done(err);   //done takes two argument first is error and second anything
             }
             if(!user || user.password != password){ //if user not found or password not match
-                console.log('Invalid Username/Password');
+                // console.log('Invalid Username/Password');
+                req.flash('error','Invalid Username/Password');
                 return done(null, false);// null= means err is not ,false= not authenticate
             }
             return done(null, user);
