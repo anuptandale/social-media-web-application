@@ -12,7 +12,7 @@ module.exports.create = async function(req,res){
             });
             post.comments.push(comment); // it will automatically fetchout id and push it
             post.save();
-
+           
             res.redirect('/');
         }
     }catch(err){

@@ -2,14 +2,34 @@ const Post = require('../models/post');
 const Comment = require('../models/comment');
 
 
-module.exports.create = function(req,res){
-    const mydata = new Post({
+module.exports.create = async function(req,res){
+    // const mydata = new Post({
+    //     content: req.body.content,
+    //     user: req.user._id // we are storing a user id to identify which user has written comment
+    // });
+    // mydata.save();
+    try{
+    let post = await Post.create({
         content: req.body.content,
-        user: req.user._id // we are storing a user id to identify which user has written comment
+        user: req.user._id
     });
-    mydata.save();
+    
+    if(req.xhr){
+        return res.status(200).json({
+            data:{
+                post: post//post is the above let post 
+            },
+            message: "Post created!"
+        })
+    }
+
     req.flash('success','Post published!');
     return res.redirect('back');
+
+    }catch(err){
+        req.flash('success','Post published!');
+        return res.redirect('back');
+    }
 }
 
 // module.exports.destroy = function(req,res){
@@ -36,6 +56,16 @@ module.exports.destroy = async function(req,res){
             post.deleteOne();
 
             await Comment.deleteMany({post: req.params.id}); //and we will require to delete all comments to that post
+
+            if(req.xhr){
+                return res.status(200).json({
+                    data:{
+                        post_id: req.params.id
+                    },
+                    message: "Post deleted"
+                })
+            }
+
             req.flash('success', 'Post and asociated comments deleted');
             return res.redirect('back');
             

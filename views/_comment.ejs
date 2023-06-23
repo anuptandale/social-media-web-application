@@ -1,7 +1,8 @@
+<li id="comment-<%=comment._id%>">
 <p>
     <% if(locals.user && locals.user.id == comment.user.id){%>
         <small>
-            <a href="/comments/destroy/<%=comment.id%>">X</a>
+            <a class="delete-comment-button" href="/comments/destroy/<%=comment.id%>">X</a>
         </small>
     <%}%>
     <%= comment.content%> <!-- momment.content = post.comments.content means we are in comment.js file from there we are fetching comments-->
@@ -10,3 +11,4 @@
         <%=comment.user.name%> <!-- comment.user.name means now we are in user.js file and from there we are fetching names-->
     </small>
 </p>
+</li>
