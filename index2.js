@@ -9,6 +9,7 @@ const db = require('./config/mongoose');
 const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
+const passportJWT = require('./config/passport-jwt-strategy');
 const MongoStore = require('connect-mongo');
 const customWare = require('./config/middleware');
 
@@ -27,10 +28,9 @@ const flash = require('connect-flash');
 app.use(express.urlencoded());
 
 app.use(express.static('./assets'));
-
+//make the uploads path available to the browser
+app.use('/uploads',express.static(__dirname + '/uploads'));
 app.use(cookieParser());
-
-
 
 //set up the view engine
 app.set('view engine', 'ejs');

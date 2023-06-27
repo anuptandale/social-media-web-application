@@ -25,7 +25,7 @@ const User = require('../models/user') ;
 //above function using async 
 try{
     module.exports.home = async function(req,res){
-        let posts = await Post.find()
+        let posts = await Post.find() //in let posts = what we have written is used to find all posts from the database
         .sort('-createdAt')
         .populate('user')
         .populate({

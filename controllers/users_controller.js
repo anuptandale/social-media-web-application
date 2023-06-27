@@ -1,6 +1,7 @@
 const { cookie } = require('express/lib/response');
 const User = require('../models/user');
-
+const fs = require('fs');
+const path = require('path');
 
 
 // render the sign up page
@@ -109,13 +110,47 @@ module.exports.createSession = function(req, res){
         return res.redirect('/');
 }
 
-module.exports.update = function(req,res){
+module.exports.update = async function(req,res){
+    // if(req.user.id == req.params.id){
+    //     User.findByIdAndUpdate(req.params.id, req.body).then(function(user, err){ //here req.body = {name: req.body,name , email: req.body.email}
+    //         return res.redirect('back');
+    //     })
+    // }else{
+    //     //if user not matched
+    //     return res.status(401).send('Unauthorized');
+    // }
+   
+    
     if(req.user.id == req.params.id){
-        User.findByIdAndUpdate(req.params.id, req.body).then(function(user, err){ //here req.body = {name: req.body,name , email: req.body.email}
+        try{
+            let user = await User.findById(req.params.id);
+            User.uploadedAvatar(req, res, function(err){
+                if(err){ console.log('***** Multer error:',err)}
+                user.name = req.body.name;
+                user.email = req.body.email;
+                console.log(req.file);
+                
+                if(req.file){
+                    if(user.avatar){ //we want to replace new image with current image 
+                        //we dont want that all img which is uploaded should get stored
+                        fs.unlinkSync(path.join(__dirname,'..',user.avatar));
+                    }
+                    //this is saving the path of the uploads file into the avatar field in the user
+                    user.avatar = User.avatarPath + '/' + req.file.filename;
+                }
+                
+                user.save();
+                return res.redirect('back'); 
+            });
+
+        }catch(err){
+            req.flash('error',err);
+            console.log(err);
+
             return res.redirect('back');
-        })
+        }
     }else{
-        //if user not matched
-        return res.status(401).send('Unauthorized');
+        req.flash('error','Unauthorized!');
+        return res.status(401).send('Unautorized');
     }
 }

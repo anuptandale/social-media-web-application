@@ -5,10 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <title>profile</title> -->
-    <link rel="stylesheet" href="../assets/scss/profile.scss">
+    <!-- <link rel="stylesheet" href="../assets/scss/profile.scss"> -->
 </head>
 <body>
+
     <h1>PROFILE</h1>
+    <img src="<%= user.avatar %>" alt="<%= user.name %>" width="100">
     <% if(user.id == profile_user.id){ %>
         <!-- if user matches then show form -->
         <form action="/users/update/<%= profile_user.id%>" enctype="multipart/form-data" method="POST">
