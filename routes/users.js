@@ -22,5 +22,12 @@ router.post('/create-session',passport.authenticate(
 ),userController.createSession)
 
 router.get('/sign-out',userController.signout);
+
+//this route work when we click the button of google signin signup
+router.get('/auth/google', passport.authenticate('google', {scope:['profile','email']})); //scope is part we want to fetch from google
+//this route work when google find the user and send back to us
+router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect:'/users/sign-in'}), userController.createSession); 
+//if fail then redirect to signin page else redirect to profile page
+
 module.exports = router;
 
