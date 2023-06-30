@@ -3,11 +3,13 @@ const Post = require('../models/post');
 const commentsMailer = require('../mailer/comments_mailer');
 const queue = require('../config/kue');
 const commentEmailWorker = require('../worker/comment_email_worker');
-
+const Like = require('../models/like');
 
 module.exports.create = async function(req,res){
     try{
         let post = await Post.findById(req.body.post); //name of input is post in home.ejs 
+
+        await Like.deleteMany({likeable: comment._id, onModel:'Comment'});
         if(post){
             let comment = await Comment.create({
                 content: req.body.content,
